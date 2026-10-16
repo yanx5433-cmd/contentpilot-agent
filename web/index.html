@@ -83,9 +83,13 @@ main{flex:1;display:grid;grid-template-columns:1fr 420px;gap:0;max-width:1400px;
 <script>
 const $=s=>document.querySelector(s);
 const esc=s=>{const d=document.createElement('div');d.textContent=s??'';return d.innerHTML};
-document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{$('#goal').value=c.textContent;run()});
-$('#goal').addEventListener('keydown',e=>{if(e.key==='Enter')run()});
-$('#runBtn').onclick=run;
+// 事件委托：比逐元素绑定更稳（动态/无头环境都可靠）
+document.addEventListener('click',e=>{
+  const chip=e.target.closest('.chip');
+  if(chip){$('#goal').value=chip.textContent;run();return;}
+  if(e.target.id==='runBtn')run();
+});
+document.addEventListener('keydown',e=>{if(e.target.id==='goal'&&e.key==='Enter')run()});
 async function run(){
   const goal=$('#goal').value.trim();
   if(goal.length<2)return;
