@@ -1,0 +1,7 @@
+services:
+  contentpilot:
+    build: .
+    ports: ["8200:8200"]
+    environment:
+      - CONTENTPILOT_WRITE_APPROVAL=1
+    restart: unless-stopped

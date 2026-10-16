@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContentPilot · 内容运营智能体</title>
+<style>
+:root{--bg:#0f1115;--panel:#171a21;--panel2:#1d212b;--border:#2a2f3a;--text:#e8eaf0;--muted:#9aa3b2;--accent:#5b8cff;--accent2:#7ee0a3;--warn:#ffb454;--danger:#ff6b6b;--mono:'Cascadia Code',Consolas,monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI','Microsoft YaHei',sans-serif;min-height:100vh;display:flex;flex-direction:column}
+header{padding:14px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+header .logo{font-size:18px;font-weight:700;color:var(--accent)}
+header .sub{color:var(--muted);font-size:12px}
+header .spacer{flex:1}
+header a{color:var(--muted);font-size:12px;text-decoration:none;margin-left:14px}
+header a:hover{color:var(--accent)}
+main{flex:1;display:grid;grid-template-columns:1fr 420px;gap:0;max-width:1400px;width:100%;margin:0 auto}
+.chat-col{display:flex;flex-direction:column;border-right:1px solid var(--border)}
+#messages{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px}
+.msg{max-width:88%;padding:10px 14px;border-radius:10px;line-height:1.65;font-size:14px;white-space:pre-wrap;word-break:break-word}
+.msg.user{align-self:flex-end;background:#2b3b63;border:1px solid #3d507f}
+.msg.agent{align-self:flex-start;background:var(--panel);border:1px solid var(--border)}
+.msg.agent .status{display:inline-block;font-size:11px;padding:1px 8px;border-radius:10px;margin-right:8px;vertical-align:middle}
+.status.done{background:#1d3a2a;color:var(--accent2)}
+.status.blocked{background:#4a3418;color:var(--warn)}
+.status.failed{background:#4a2020;color:var(--danger)}
+.input-row{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px}
+#goal{flex:1;background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:14px;outline:none}
+#goal:focus{border-color:var(--accent)}
+#runBtn{background:var(--accent);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:600}
+#runBtn:disabled{opacity:.5;cursor:wait}
+.chips{padding:0 20px 12px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--panel2);border:1px solid var(--border);color:var(--muted);font-size:12px;padding:5px 12px;border-radius:14px;cursor:pointer}
+.chip:hover{color:var(--accent);border-color:var(--accent)}
+.trace-col{overflow-y:auto;padding:16px 18px;background:#0c0e12}
+.trace-col h3{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:10px;letter-spacing:1px}
+#trace{font-family:var(--mono);font-size:12px;line-height:1.7}
+.tl{margin-bottom:6px;padding:6px 10px;border-radius:6px;background:var(--panel);border-left:3px solid var(--border)}
+.tl.guard{border-left-color:var(--danger)}
+.tl.plan{border-left-color:var(--accent)}
+.tl.tool_call{border-left-color:#8a7bff}
+.tl.observation{border-left-color:var(--accent2)}
+.tl.answer{border-left-color:var(--warn)}
+.tl .etype{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:1px}
+.tl pre{white-space:pre-wrap;word-break:break-all;margin-top:3px;color:#c8cfdc}
+#steps{margin-top:14px}
+.step-line{display:flex;align-items:center;gap:8px;padding:5px 8px;font-size:12px;border-bottom:1px dashed var(--border)}
+.step-line .dot{width:8px;height:8px;border-radius:50%}
+.dot.done{background:var(--accent2)}.dot.blocked{background:var(--warn)}.dot.failed{background:var(--danger)}.dot.skipped{background:#555}
+.step-line .tool{font-family:var(--mono);color:var(--accent)}
+.empty{color:var(--muted);text-align:center;padding:60px 20px;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">ContentPilot</span>
+  <span class="sub">带货内容运营智能体 · 规划 → 工具 → 护栏 → 轨迹</span>
+  <span class="spacer"></span>
+  <a href="/docs" target="_blank">API 文档</a>
+</header>
+<main>
+  <div class="chat-col">
+    <div id="messages"><div class="empty">输入一个运营目标，智能体会自动规划步骤、调用工具、受护栏约束执行。<br>右侧实时展示执行轨迹（每次工具调用都可审计）。</div></div>
+    <div class="chips">
+      <span class="chip">研究一下「打底裤」的选题</span>
+      <span class="chip">出一份上周的账号周报</span>
+      <span class="chip">帮我看看该挂什么商品</span>
+      <span class="chip">审查文案：「全网最低价打底衫，最佳选择」</span>
+      <span class="chip">发布这条视频：「秋冬打底裤实测」</span>
+    </div>
+    <div class="input-row">
+      <input id="goal" placeholder="例如：研究一下「开衫」的选题…" maxlength="500">
+      <button id="runBtn">执行</button>
+    </div>
+  </div>
+  <div class="trace-col">
+    <h3>执行轨迹（TRACE）</h3>
+    <div id="steps"></div>
+    <h3 style="margin-top:14px">事件流</h3>
+    <div id="trace"><div class="empty">尚无轨迹</div></div>
+  </div>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>{const d=document.createElement('div');d.textContent=s??'';return d.innerHTML};
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{$('#goal').value=c.textContent;run()});
+$('#goal').addEventListener('keydown',e=>{if(e.key==='Enter')run()});
+$('#runBtn').onclick=run;
+async function run(){
+  const goal=$('#goal').value.trim();
+  if(goal.length<2)return;
+  $('#runBtn').disabled=true;
+  const em=$('#messages');
+  if(em.querySelector('.empty'))em.innerHTML='';
+  em.insertAdjacentHTML('beforeend',`<div class="msg user">${esc(goal)}</div>`);
+  try{
+    const r=await fetch('/api/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({goal})});
+    const data=await r.json();
+    em.insertAdjacentHTML('beforeend',`<div class="msg agent"><span class="status ${data.status}">${data.status.toUpperCase()}</span>${esc(data.answer)}</div>`);
+    renderSteps(data.steps);
+    const tr=await fetch('/api/trace/'+data.task_id);
+    if(tr.ok)renderTrace(await tr.json());
+  }catch(e){
+    em.insertAdjacentHTML('beforeend',`<div class="msg agent">请求失败：${esc(e.message)}</div>`);
+  }
+  em.scrollTop=em.scrollHeight;
+  $('#runBtn').disabled=false;
+}
+function renderSteps(steps){
+  $('#steps').innerHTML='<h3>计划步骤</h3>'+steps.map(s=>
+    `<div class="step-line"><span class="dot ${s.status}"></span><span class="tool">${esc(s.tool)}</span><span style="color:var(--muted)">${esc(s.reason)}</span></div>`
+  ).join('');
+}
+function renderTrace(t){
+  $('#trace').innerHTML=t.events.map(e=>{
+    let body='';
+    if(e.type==='plan')body=(e.payload.steps||[]).map(s=>s.tool).join(' → ');
+    else if(e.type==='guard')body=`${e.payload.gate} ${e.payload.allowed?'放行':'拦截'} ${e.payload.reason||''}`;
+    else if(e.type==='tool_call')body=`${e.payload.tool}(${JSON.stringify(e.payload.args)})`;
+    else if(e.type==='observation')body=e.payload.error?`✗ ${e.payload.tool}: ${e.payload.error}`:`✓ ${e.payload.tool}`;
+    else if(e.type==='answer')body='结论落定';
+    return `<div class="tl ${e.type}"><span class="etype">#${e.seq} ${e.type}</span><pre>${esc(body)}</pre></div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>

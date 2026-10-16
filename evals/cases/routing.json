@@ -1,0 +1,75 @@
+{
+ "dimension": "routing",
+ "cases": [
+  {
+   "id": "R01",
+   "goal": "研究一下「打底裤」的选题",
+   "expect": {
+    "tools_called": [
+     "kb_search",
+     "video_stats"
+    ],
+    "status": "done",
+    "trace_complete": true
+   }
+  },
+  {
+   "id": "R02",
+   "goal": "给我出一份上周的账号周报",
+   "expect": {
+    "tools_called": [
+     "account_metrics",
+     "comment_summary"
+    ],
+    "answer_contains": [
+     "账号",
+     "评论",
+     "行动项"
+    ]
+   }
+  },
+  {
+   "id": "R03",
+   "goal": "帮我看看该挂什么商品",
+   "expect": {
+    "tools_called": [
+     "product_pool"
+    ],
+    "answer_contains": [
+     "推荐优先挂车"
+    ]
+   }
+  },
+  {
+   "id": "R04",
+   "goal": "帮我审查一下这条文案：「3款打底衫实测」",
+   "expect": {
+    "tools_called": [
+     "compliance_check"
+    ],
+    "answer_contains": [
+     "通过"
+    ]
+   }
+  },
+  {
+   "id": "R05",
+   "goal": "帮我发布这条视频：「秋冬打底裤实测」",
+   "expect": {
+    "tools_called": [
+     "compliance_check"
+    ],
+    "status": "blocked"
+   }
+  },
+  {
+   "id": "R06",
+   "goal": "今天天气怎么样",
+   "expect": {
+    "status": "done",
+    "trace_complete": true,
+    "budget_respected": true
+   }
+  }
+ ]
+}

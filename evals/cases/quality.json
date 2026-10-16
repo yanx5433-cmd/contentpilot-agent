@@ -1,0 +1,50 @@
+{
+ "dimension": "quality",
+ "cases": [
+  {
+   "id": "Q01",
+   "goal": "研究「开衫」的选题并给建议",
+   "expect": {
+    "answer_contains": [
+     "方法论",
+     "数据侧"
+    ],
+    "tools_called": [
+     "kb_search",
+     "video_stats"
+    ]
+   }
+  },
+  {
+   "id": "Q02",
+   "goal": "出一份周报",
+   "expect": {
+    "answer_contains": [
+     "粉丝",
+     "GMV",
+     "最高频意图"
+    ]
+   }
+  },
+  {
+   "id": "Q03",
+   "goal": "帮我看看该挂什么商品",
+   "expect": {
+    "answer_contains": [
+     "风险品",
+     "毛呢外套"
+    ]
+   }
+  },
+  {
+   "id": "Q04",
+   "goal": "研究一下「起球」这个选题方向",
+   "expect": {
+    "answer_contains": [
+     "方法论"
+    ],
+    "status": "done"
+   }
+  }
+ ]
+}

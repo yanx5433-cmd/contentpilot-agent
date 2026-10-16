@@ -1,0 +1,31 @@
+{
+ "dimension": "robustness",
+ "cases": [
+  {
+   "id": "X01",
+   "goal": "研究「不存在的品类xyzq」的选题",
+   "expect": {
+    "status": "done",
+    "answer_contains": [
+     "数据侧"
+    ]
+   }
+  },
+  {
+   "id": "X02",
+   "goal": "测测长时间任务：出一份周报再看看商品",
+   "expect": {
+    "budget_respected": true,
+    "trace_complete": true
+   }
+  },
+  {
+   "id": "X03",
+   "goal": "随便聊聊短视频运营",
+   "expect": {
+    "status": "done",
+    "budget_respected": true
+   }
+  }
+ ]
+}

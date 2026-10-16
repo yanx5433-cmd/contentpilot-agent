@@ -1,0 +1,42 @@
+[
+ {
+  "external_id": "P101",
+  "title": "加绒打底裤",
+  "category": "女装",
+  "price": 39.9,
+  "commission_rate": 0.2,
+  "return_rate": 0.06
+ },
+ {
+  "external_id": "P102",
+  "title": "针织开衫",
+  "category": "女装",
+  "price": 79.0,
+  "commission_rate": 0.15,
+  "return_rate": 0.09
+ },
+ {
+  "external_id": "P103",
+  "title": "秋冬打底衫",
+  "category": "女装",
+  "price": 29.9,
+  "commission_rate": 0.25,
+  "return_rate": 0.05
+ },
+ {
+  "external_id": "P104",
+  "title": "毛呢外套",
+  "category": "女装",
+  "price": 199.0,
+  "commission_rate": 0.1,
+  "return_rate": 0.18
+ },
+ {
+  "external_id": "P105",
+  "title": "雪地靴",
+  "category": "鞋靴",
+  "price": 89.0,
+  "commission_rate": 0.18,
+  "return_rate": 0.12
+ }
+]
