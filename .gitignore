@@ -8,3 +8,6 @@ run/
 # 环境变量文件（含可能的 Key）
 .env
 .env.local
+
+# workflow 推送受 token 权限限制，暂不发布（本地保留）
+.github/
