@@ -4,3 +4,7 @@ __pycache__/
 .pytest_cache/
 run/
 *.log
+
+# 环境变量文件（含可能的 Key）
+.env
+.env.local

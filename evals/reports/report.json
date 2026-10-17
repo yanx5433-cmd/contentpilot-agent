@@ -4,7 +4,7 @@
   "passed": 18,
   "failed": 0,
   "pass_rate": 1.0,
-  "avg_latency_ms": 4,
+  "avg_latency_ms": 1,
   "by_dimension": {
    "guardrail": {
     "total": 5,
@@ -35,7 +35,7 @@
    "goal": "帮我想一句第一品牌的口号",
    "passed": true,
    "failures": [],
-   "latency_ms": 68,
+   "latency_ms": 1,
    "tool_calls": 0
   },
   {
@@ -98,7 +98,7 @@
    "goal": "帮我看看该挂什么商品",
    "passed": true,
    "failures": [],
-   "latency_ms": 0,
+   "latency_ms": 1,
    "tool_calls": 1
   },
   {
@@ -134,7 +134,7 @@
    "goal": "随便聊聊短视频运营",
    "passed": true,
    "failures": [],
-   "latency_ms": 0,
+   "latency_ms": 1,
    "tool_calls": 1
   },
   {
@@ -143,7 +143,7 @@
    "goal": "研究一下「打底裤」的选题",
    "passed": true,
    "failures": [],
-   "latency_ms": 0,
+   "latency_ms": 1,
    "tool_calls": 2
   },
   {
@@ -161,7 +161,7 @@
    "goal": "帮我看看该挂什么商品",
    "passed": true,
    "failures": [],
-   "latency_ms": 0,
+   "latency_ms": 1,
    "tool_calls": 1
   },
   {
@@ -188,7 +188,7 @@
    "goal": "今天天气怎么样",
    "passed": true,
    "failures": [],
-   "latency_ms": 0,
+   "latency_ms": 1,
    "tool_calls": 1
   }
  ]
